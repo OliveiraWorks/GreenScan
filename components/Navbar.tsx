@@ -125,8 +125,7 @@ export default function Navbar({ onReportClick, reportCount }: NavbarProps) {
                   </div>
                 )}
               </div>
-            ) : (
-              ) : null}
+            ) : null}
           </div>
         </div>
       </div>
