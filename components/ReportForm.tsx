@@ -54,8 +54,8 @@ export default function ReportForm({ onSuccess }: ReportFormProps) {
       alert('Apenas imagens JPEG, PNG ou WebP são aceitas.');
       return;
     }
-    if (f.size > 10 * 1024 * 1024) {
-      alert('A imagem deve ter no máximo 10MB.');
+    if (f.size > 20 * 1024 * 1024) {
+      alert('A imagem deve ter no máximo 20MB.');
       return;
     }
     setFile(f);
@@ -149,13 +149,46 @@ export default function ReportForm({ onSuccess }: ReportFormProps) {
     );
   };
 
-  // ── Base64 ───────────────────────────────────────────────
-  const fileToBase64 = (f: File): Promise<string> =>
+  // ── Compressão + Base64 ──────────────────────────────────
+  const compressAndToBase64 = (f: File): Promise<{ base64: string; mime: string }> =>
     new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = (e) => resolve((e.target?.result as string).split(',')[1]);
-      reader.onerror = reject;
-      reader.readAsDataURL(f);
+      const img = new Image();
+      const url = URL.createObjectURL(f);
+      img.onload = () => {
+        const MAX = 1200;
+        let { width, height } = img;
+        if (width > MAX || height > MAX) {
+          if (width > height) {
+            height = Math.round((height * MAX) / width);
+            width = MAX;
+          } else {
+            width = Math.round((width * MAX) / height);
+            height = MAX;
+          }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext('2d')!.drawImage(img, 0, 0, width, height);
+        URL.revokeObjectURL(url);
+        canvas.toBlob(
+          (blob) => {
+            if (!blob) return reject(new Error('Falha ao comprimir imagem'));
+            const reader = new FileReader();
+            reader.onload = (e) =>
+              resolve({
+                base64: (e.target?.result as string).split(',')[1],
+                mime: 'image/jpeg',
+              });
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+          },
+          'image/jpeg',
+          0.75
+        );
+      };
+      img.onerror = reject;
+      img.src = url;
     });
 
   // ── Submit ───────────────────────────────────────────────
@@ -171,14 +204,16 @@ export default function ReportForm({ onSuccess }: ReportFormProps) {
 
     try {
       const { data: { user } } = await supabase.auth.getUser();
-      const image_file = await fileToBase64(file);
+      const { base64: image_file, mime: mime_type_compressed } = await compressAndToBase64(file);
 
       const res = await fetch('/api/reports', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          image_file, mime_type: file.type,
-          latitude, longitude,
+          image_file,
+          mime_type: mime_type_compressed,
+          latitude,
+          longitude,
           address: address || undefined,
           user_id: user?.id ?? undefined,
         }),
@@ -245,7 +280,7 @@ export default function ReportForm({ onSuccess }: ReportFormProps) {
                   </svg>
                 </div>
                 <p className="text-sm font-medium text-gray-600">Arraste uma foto ou <span className="text-[#3B6D11] font-semibold">clique para selecionar</span></p>
-                <p className="text-xs text-gray-400">JPEG, PNG ou WebP — máx. 10MB</p>
+                <p className="text-xs text-gray-400">JPEG, PNG ou WebP — máx. 20MB</p>
               </div>
               <input ref={galleryInputRef} type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={onFileChange} />
             </div>
