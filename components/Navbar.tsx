@@ -126,13 +126,13 @@ export default function Navbar({ onReportClick, reportCount }: NavbarProps) {
                 )}
               </div>
             ) : (
-              <button
+              /*<button
                 id="login-btn"
                 onClick={handleLogin}
                 className="flex items-center gap-2 border border-[#3B6D11] text-[#3B6D11] hover:bg-[#3B6D11] hover:text-white text-sm font-medium px-4 py-2 rounded-xl transition-all font-inter"
               >
                 Entrar
-              </button>
+              </button>*/
             )}
           </div>
         </div>
