@@ -22,7 +22,7 @@ export async function GET() {
       .eq('has_waste', true)
       .eq('status', 'confirmed')
       .order('created_at', { ascending: false })
-      .limit(100);
+      .limit(20)
 
     if (error) throw error;
 
