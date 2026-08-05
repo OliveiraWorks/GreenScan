@@ -1,11 +1,11 @@
 // ============================================================
 // OpenRouter — Análise de imagens com visão computacional
-// Modelo: meta-llama/llama-4-maverick:free (suporta visão + system prompt)
+// Modelo: google/gemma-4-31b-it:free (suporta visão + system prompt)
 // ============================================================
 import { AnalysisResult } from './types';
 
 const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
-const MODEL = 'google/gemma-4-31b-it:free';
+const MODEL = 'openrouter/auto';
 
 const SYSTEM_PROMPT = `Você é um modelo especializado em análise de imagens ambientais para o sistema GreenScan, uma plataforma de monitoramento de descarte irregular de resíduos sólidos.
 
