@@ -92,7 +92,7 @@ export default function HomePage() {
       <button
         id="fab-report-btn"
         onClick={() => setModalOpen(true)}
-        className="absolute bottom-6 right-6 z-[999] bg-[#3B6D11] hover:bg-[#2A4D0C] text-white font-semibold px-6 py-3.5 rounded-2xl shadow-xl hover:shadow-2xl flex items-center gap-2.5 transition-all hover:-translate-y-1 active:translate-y-0 font-inter"
+        className="absolute bottom-16 sm:bottom-6 right-6 z-[999] bg-[#3B6D11] hover:bg-[#2A4D0C] text-white font-semibold px-6 py-3.5 rounded-2xl shadow-xl hover:shadow-2xl flex items-center gap-2.5 transition-all hover:-translate-y-1 active:translate-y-0 font-inter"
       >
         <span className="text-xl leading-none">+</span>
         <span>Reportar</span>
