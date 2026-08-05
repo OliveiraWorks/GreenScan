@@ -18,7 +18,7 @@ export async function GET() {
   try {
     const { data, error } = await supabaseAdmin
       .from('reports')
-      .select('*')
+      .select('id, created_at, latitude, longitude, address, severity, waste_types, description, status, image_url')
       .eq('has_waste', true)
       .eq('status', 'confirmed')
       .order('created_at', { ascending: false })
