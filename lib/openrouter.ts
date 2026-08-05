@@ -5,7 +5,7 @@
 import { AnalysisResult } from './types';
 
 const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
-const MODEL = 'nvidia/nemotron-nano-12b-v2-vl:free';
+const MODEL = 'google/gemma-4-31b-it:free';
 
 const SYSTEM_PROMPT = `Você é um modelo especializado em análise de imagens ambientais para o sistema GreenScan, uma plataforma de monitoramento de descarte irregular de resíduos sólidos.
 
