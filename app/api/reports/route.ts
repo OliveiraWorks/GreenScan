@@ -108,7 +108,7 @@ export async function POST(request: NextRequest) {
       confidence: analysis.confidence,
       waste_types: analysis.waste_types,
       severity: analysis.severity,
-      description: analysis.description,
+      // description removido
       status: 'confirmed' as const,
     };
 
